@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raja's Conviction Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --surface: #111114;
+    --surface2: #18181d;
+    --border: #222228;
+    --border2: #2e2e38;
+    --gold: #c9a84c;
+    --gold-dim: #7a6230;
+    --gold-glow: rgba(201,168,76,0.12);
+    --red: #e05c5c;
+    --green: #4caf7a;
+    --blue: #5c8fe0;
+    --purple: #9b7fe0;
+    --text: #e8e6e0;
+    --text-dim: #7a7870;
+    --text-mid: #b0ad a4;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Playfair Display', serif;
+    --sans: 'Barlow', sans-serif;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: var(–bg);
+color: var(–text);
+font-family: var(–sans);
+font-weight: 300;
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* Grain overlay */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
+pointer-events: none;
+z-index: 1000;
+opacity: 0.6;
+}
+
+/* Header */
+.header {
+border-bottom: 1px solid var(–border);
+padding: 0 2.5rem;
+position: sticky;
+top: 0;
+background: rgba(10,10,12,0.92);
+backdrop-filter: blur(12px);
+z-index: 100;
+display: flex;
+align-items: center;
+justify-content: space-between;
+height: 64px;
+}
+
+.logo {
+font-family: var(–serif);
+font-size: 1.1rem;
+color: var(–gold);
+letter-spacing: 0.02em;
+}
+
+.logo span {
+color: var(–text-dim);
+font-style: italic;
+font-size: 0.85rem;
+margin-left: 0.5rem;
+}
+
+.nav {
+display: flex;
+gap: 0;
+border: 1px solid var(–border);
+border-radius: 4px;
+overflow: hidden;
+}
+
+.nav-btn {
+background: none;
+border: none;
+color: var(–text-dim);
+font-family: var(–mono);
+font-size: 0.7rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+padding: 0.5rem 1rem;
+cursor: pointer;
+transition: all 0.2s;
+border-right: 1px solid var(–border);
+}
+
+.nav-btn:last-child { border-right: none; }
+
+.nav-btn:hover, .nav-btn.active {
+background: var(–gold-glow);
+color: var(–gold);
+}
+
+.date-badge {
+font-family: var(–mono);
+font-size: 0.7rem;
+color: var(–text-dim);
+letter-spacing: 0.08em;
+}
+
+/* Main layout */
+.main { padding: 2rem 2.5rem; max-width: 1400px; margin: 0 auto; }
+
+/* Sections */
+.section { display: none; }
+.section.active { display: block; }
+
+/* Page title */
+.page-title {
+font-family: var(–serif);
+font-size: 2rem;
+font-weight: 400;
+color: var(–text);
+margin-bottom: 0.4rem;
+}
+
+.page-subtitle {
+font-family: var(–mono);
+font-size: 0.72rem;
+color: var(–text-dim);
+letter-spacing: 0.1em;
+text-transform: uppercase;
+margin-bottom: 2rem;
+}
+
+/* Dashboard grid */
+.dash-grid {
+display: grid;
+grid-template-columns: 1fr 1fr 1fr;
+gap: 1px;
+background: var(–border);
+border: 1px solid var(–border);
+margin-bottom: 2rem;
+}
+
+.stat-card {
+background: var(–surface);
+padding: 1.5rem;
+}
+
+.stat-label {
+font-family: var(–mono);
+font-size: 0.65rem;
+letter-spacing: 0.14em;
+text-transform: uppercase;
+color: var(–text-dim);
+margin-bottom: 0.5rem;
+}
+
+.stat-value {
+font-family: var(–serif);
+font-size: 1.8rem;
+color: var(–gold);
+}
+
+.stat-sub {
+font-family: var(–mono);
+font-size: 0.68rem;
+color: var(–text-dim);
+margin-top: 0.3rem;
+}
+
+/* Thesis cards */
+.thesis-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 1.5rem;
+margin-bottom: 2rem;
+}
+
+.thesis-card {
+background: var(–surface);
+border: 1px solid var(–border);
+padding: 1.8rem;
+position: relative;
+transition: border-color 0.2s;
+cursor: pointer;
+}
+
+.thesis-card:hover { border-color: var(–gold-dim); }
+
+.thesis-card::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0;
+width: 3px;
+height: 100%;
+}
+
+.thesis-card.nuclear::before { background: var(–purple); }
+.thesis-card.datacenter::before { background: var(–blue); }
+.thesis-card.bess::before { background: var(–green); }
+.thesis-card.hydrogen::before { background: var(–gold); }
+.thesis-card.recycling::before { background: var(–red); }
+
+.thesis-sector {
+font-family: var(–mono);
+font-size: 0.62rem;
+letter-spacing: 0.16em;
+text-transform: uppercase;
+margin-bottom: 0.6rem;
+}
+
+.thesis-card.nuclear .thesis-sector { color: var(–purple); }
+.thesis-card.datacenter .thesis-sector { color: var(–blue); }
+.thesis-card.bess .thesis-sector { color: var(–green); }
+.thesis-card.hydrogen .thesis-sector { color: var(–gold); }
+.thesis-card.recycling .thesis-sector { color: var(–red); }
+
+.thesis-title {
+font-family: var(–serif);
+font-size: 1.25rem;
+margin-bottom: 0.3rem;
+}
+
+.thesis-ticker {
+font-family: var(–mono);
+font-size: 0.72rem;
+color: var(–text-dim);
+margin-bottom: 1rem;
+}
+
+.thesis-moat {
+font-size: 0.82rem;
+line-height: 1.6;
+color: #a8a5a0;
+margin-bottom: 1.2rem;
+border-left: 1px solid var(–border2);
+padding-left: 0.8rem;
+}
+
+.thesis-metrics {
+display: grid;
+grid-template-columns: 1fr 1fr 1fr;
+gap: 0.8rem;
+margin-bottom: 1.2rem;
+}
+
+.metric {
+background: var(–surface2);
+padding: 0.6rem;
+text-align: center;
+}
+
+.metric-label {
+font-family: var(–mono);
+font-size: 0.58rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(–text-dim);
+margin-bottom: 0.2rem;
+}
+
+.metric-val {
+font-family: var(–mono);
+font-size: 0.82rem;
+color: var(–text);
+}
+
+.metric-val.green { color: var(–green); }
+.metric-val.red { color: var(–red); }
+.metric-val.gold { color: var(–gold); }
+
+/* Red flags */
+.red-flags {
+margin-bottom: 1rem;
+}
+
+.red-flags-title {
+font-family: var(–mono);
+font-size: 0.62rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(–red);
+margin-bottom: 0.5rem;
+display: flex;
+align-items: center;
+gap: 0.4rem;
+}
+
+.flag-item {
+font-size: 0.75rem;
+color: #b0a898;
+padding: 0.25rem 0;
+padding-left: 0.8rem;
+border-left: 2px solid var(–border2);
+margin-bottom: 0.25rem;
+display: flex;
+align-items: flex-start;
+gap: 0.4rem;
+}
+
+.flag-item.warn::before { content: ‘⚠’; font-size: 0.7rem; color: #c9a84c; flex-shrink: 0; }
+.flag-item.pass::before { content: ‘✓’; font-size: 0.7rem; color: var(–green); flex-shrink: 0; }
+.flag-item.fail::before { content: ‘✗’; font-size: 0.7rem; color: var(–red); flex-shrink: 0; }
+
+/* Potential badge */
+.potential-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding-top: 1rem;
+border-top: 1px solid var(–border);
+}
+
+.potential-label {
+font-family: var(–mono);
+font-size: 0.65rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(–text-dim);
+}
+
+.potential-value {
+font-family: var(–serif);
+font-size: 1.1rem;
+font-style: italic;
+color: var(–gold);
+}
+
+.confidence-bar {
+display: flex;
+gap: 3px;
+align-items: center;
+}
+
+.conf-dot {
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background: var(–border2);
+}
+
+.conf-dot.filled { background: var(–gold); }
+
+/* Tracking notes section */
+.tracking-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1.5rem;
+}
+
+.add-note-btn {
+background: var(–gold-glow);
+border: 1px solid var(–gold-dim);
+color: var(–gold);
+font-family: var(–mono);
+font-size: 0.68rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+padding: 0.5rem 1rem;
+cursor: pointer;
+transition: all 0.2s;
+}
+
+.add-note-btn:hover {
+background: rgba(201,168,76,0.2);
+border-color: var(–gold);
+}
+
+/* Notes list */
+.notes-list { display: flex; flex-direction: column; gap: 1rem; }
+
+.note-card {
+background: var(–surface);
+border: 1px solid var(–border);
+padding: 1.2rem 1.5rem;
+display: grid;
+grid-template-columns: 120px 1fr auto;
+gap: 1.5rem;
+align-items: start;
+transition: border-color 0.2s;
+}
+
+.note-card:hover { border-color: var(–border2); }
+
+.note-date {
+font-family: var(–mono);
+font-size: 0.68rem;
+color: var(–text-dim);
+line-height: 1.5;
+}
+
+.note-company {
+font-family: var(–mono);
+font-size: 0.62rem;
+color: var(–gold);
+letter-spacing: 0.1em;
+text-transform: uppercase;
+margin-bottom: 0.2rem;
+}
+
+.note-type {
+display: inline-block;
+font-family: var(–mono);
+font-size: 0.58rem;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+padding: 0.15rem 0.4rem;
+border-radius: 2px;
+margin-bottom: 0.4rem;
+}
+
+.note-type.trigger { background: rgba(92,143,224,0.15); color: var(–blue); }
+.note-type.risk { background: rgba(224,92,92,0.15); color: var(–red); }
+.note-type.milestone { background: rgba(76,175,122,0.15); color: var(–green); }
+.note-type.watchpoint { background: rgba(201,168,76,0.15); color: var(–gold); }
+.note-type.thesis { background: rgba(155,127,224,0.15); color: var(–purple); }
+
+.note-text {
+font-size: 0.82rem;
+line-height: 1.65;
+color: #a8a5a0;
+}
+
+.delete-btn {
+background: none;
+border: none;
+color: var(–border2);
+cursor: pointer;
+font-size: 0.9rem;
+transition: color 0.2s;
+padding: 0.2rem;
+}
+
+.delete-btn:hover { color: var(–red); }
+
+/* Modal */
+.modal-overlay {
+display: none;
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.75);
+z-index: 200;
+align-items: center;
+justify-content: center;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+background: var(–surface);
+border: 1px solid var(–border2);
+padding: 2rem;
+width: 520px;
+max-width: 95vw;
+}
+
+.modal-title {
+font-family: var(–serif);
+font-size: 1.2rem;
+margin-bottom: 1.5rem;
+color: var(–gold);
+}
+
+.form-row { margin-bottom: 1rem; }
+
+.form-label {
+font-family: var(–mono);
+font-size: 0.62rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(–text-dim);
+display: block;
+margin-bottom: 0.4rem;
+}
+
+.form-input, .form-select, .form-textarea {
+width: 100%;
+background: var(–surface2);
+border: 1px solid var(–border2);
+color: var(–text);
+font-family: var(–sans);
+font-size: 0.85rem;
+padding: 0.6rem 0.8rem;
+outline: none;
+transition: border-color 0.2s;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+border-color: var(–gold-dim);
+}
+
+.form-select option { background: var(–surface2); }
+
+.form-textarea { min-height: 100px; resize: vertical; }
+
+.modal-actions {
+display: flex;
+gap: 0.8rem;
+justify-content: flex-end;
+margin-top: 1.5rem;
+}
+
+.btn-cancel {
+background: none;
+border: 1px solid var(–border2);
+color: var(–text-dim);
+font-family: var(–mono);
+font-size: 0.68rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+padding: 0.5rem 1rem;
+cursor: pointer;
+}
+
+.btn-save {
+background: var(–gold-glow);
+border: 1px solid var(–gold-dim);
+color: var(–gold);
+font-family: var(–mono);
+font-size: 0.68rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+padding: 0.5rem 1.2rem;
+cursor: pointer;
+transition: all 0.2s;
+}
+
+.btn-save:hover { background: rgba(201,168,76,0.2); border-color: var(–gold); }
+
+/* Watchlist table */
+.watchlist-table {
+width: 100%;
+border-collapse: collapse;
+margin-bottom: 2rem;
+}
+
+.watchlist-table th {
+font-family: var(–mono);
+font-size: 0.62rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(–text-dim);
+text-align: left;
+padding: 0.7rem 1rem;
+border-bottom: 1px solid var(–border);
+background: var(–surface);
+}
+
+.watchlist-table td {
+padding: 0.9rem 1rem;
+border-bottom: 1px solid var(–border);
+font-size: 0.82rem;
+background: var(–surface2);
+}
+
+.watchlist-table tr:hover td { background: var(–surface); }
+
+.ticker-cell {
+font-family: var(–mono);
+font-size: 0.78rem;
+color: var(–gold);
+letter-spacing: 0.08em;
+}
+
+.status-badge {
+display: inline-block;
+font-family: var(–mono);
+font-size: 0.58rem;
+letter-spacing: 0.08em;
+text-transform: uppercase;
+padding: 0.15rem 0.5rem;
+border-radius: 2px;
+}
+
+.status-badge.watching { background: rgba(201,168,76,0.15); color: var(–gold); }
+.status-badge.tracking { background: rgba(92,143,224,0.15); color: var(–blue); }
+.status-badge.wait { background: rgba(122,98,48,0.15); color: var(–gold-dim); }
+.status-badge.entry { background: rgba(76,175,122,0.15); color: var(–green); }
+
+/* Checklist */
+.checklist {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 1rem;
+margin-bottom: 2rem;
+}
+
+.checklist-card {
+background: var(–surface);
+border: 1px solid var(–border);
+padding: 1.4rem;
+}
+
+.checklist-title {
+font-family: var(–mono);
+font-size: 0.65rem;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+color: var(–text-dim);
+margin-bottom: 1rem;
+}
+
+.check-item {
+display: flex;
+align-items: flex-start;
+gap: 0.6rem;
+margin-bottom: 0.5rem;
+font-size: 0.8rem;
+color: #a0a0a0;
+cursor: pointer;
+}
+
+.check-item input[type=“checkbox”] {
+accent-color: var(–gold);
+margin-top: 0.1rem;
+flex-shrink: 0;
+}
+
+/* Divider */
+.section-divider {
+height: 1px;
+background: linear-gradient(90deg, var(–border), transparent);
+margin: 2rem 0;
+}
+
+/* Entry signal box */
+.signal-box {
+background: var(–surface);
+border: 1px solid var(–border);
+border-left: 3px solid var(–gold);
+padding: 1rem 1.2rem;
+margin-bottom: 1rem;
+display: flex;
+gap: 1rem;
+align-items: flex-start;
+}
+
+.signal-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem; }
+
+.signal-title {
+font-family: var(–mono);
+font-size: 0.7rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 0.3rem;
+}
+
+.signal-text {
+font-size: 0.8rem;
+color: #a0a0a0;
+line-height: 1.5;
+}
+
+/* Scroll bar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(–bg); }
+::-webkit-scrollbar-thumb { background: var(–border2); }
+
+/* Animation */
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(8px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.section.active { animation: fadeIn 0.3s ease; }
+
+/* Empty state */
+.empty-state {
+text-align: center;
+padding: 3rem;
+border: 1px dashed var(–border2);
+color: var(–text-dim);
+font-family: var(–mono);
+font-size: 0.75rem;
+letter-spacing: 0.08em;
+}
+
+/* Full thesis modal */
+.thesis-full-overlay {
+display: none;
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.85);
+z-index: 300;
+overflow-y: auto;
+padding: 2rem;
+}
+
+.thesis-full-overlay.open { display: block; }
+
+.thesis-full {
+background: var(–surface);
+border: 1px solid var(–border2);
+max-width: 800px;
+margin: 0 auto;
+padding: 2.5rem;
+}
+
+.thesis-full-header {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+margin-bottom: 2rem;
+padding-bottom: 1.5rem;
+border-bottom: 1px solid var(–border);
+}
+
+.thesis-full-close {
+background: none;
+border: 1px solid var(–border2);
+color: var(–text-dim);
+width: 32px; height: 32px;
+cursor: pointer;
+font-size: 1rem;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+}
+
+.thesis-full-close:hover { border-color: var(–red); color: var(–red); }
+
+.thesis-box {
+background: var(–surface2);
+border: 1px solid var(–border);
+padding: 1.2rem;
+margin-bottom: 1rem;
+}
+
+.thesis-box-label {
+font-family: var(–mono);
+font-size: 0.62rem;
+letter-spacing: 0.14em;
+text-transform: uppercase;
+color: var(–text-dim);
+margin-bottom: 0.6rem;
+}
+
+.thesis-box-content {
+font-size: 0.85rem;
+line-height: 1.7;
+color: #b0ada8;
+}
+
+.thesis-box-content li {
+padding: 0.2rem 0;
+padding-left: 1rem;
+position: relative;
+}
+
+.thesis-box-content li::before {
+content: ‘—’;
+position: absolute;
+left: 0;
+color: var(–text-dim);
+font-size: 0.7rem;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Header -->
+
+<header class="header">
+  <div class="logo">
+    Raja's Conviction Portfolio
+    <span>Data Center · Nuclear · Niche</span>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn active" onclick="showSection('dashboard', this)">Dashboard</button>
+    <button class="nav-btn" onclick="showSection('thesis', this)">Thesis</button>
+    <button class="nav-btn" onclick="showSection('watchlist', this)">Watchlist</button>
+    <button class="nav-btn" onclick="showSection('notes', this)">Track Notes</button>
+    <button class="nav-btn" onclick="showSection('checklist', this)">Pre-Buy Check</button>
+  </nav>
+  <div class="date-badge" id="currentDate"></div>
+</header>
+
+<main class="main">
+
+  <!-- ===== DASHBOARD ===== -->
+
+  <section id="dashboard" class="section active">
+    <h1 class="page-title">Portfolio Intelligence</h1>
+    <p class="page-subtitle">Last updated: April 2026 · Red flags first, thesis last</p>
+
+```
+<div class="dash-grid">
+  <div class="stat-card">
+    <div class="stat-label">Active Theses</div>
+    <div class="stat-value">10</div>
+    <div class="stat-sub">Across 4 sectors</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Next Catalyst</div>
+    <div class="stat-value" style="font-size:1.1rem; margin-top:0.3rem;">KSB Q4 FY26</div>
+    <div class="stat-sub">Apr 30, 2026 · Board meeting</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Key Watch</div>
+    <div class="stat-value" style="font-size:1.1rem; margin-top:0.3rem;">Sealmatic FY26</div>
+    <div class="stat-sub">Results pending · Nuclear ramp</div>
+  </div>
+</div>
+
+<!-- Entry signals -->
+<div class="page-subtitle" style="margin-bottom:1rem;">Active Entry Signals</div>
+
+<div class="signal-box">
+  <div class="signal-icon">🔔</div>
+  <div>
+    <div class="signal-title">KSB Limited — Nuclear Testing Milestone</div>
+    <div class="signal-text">Nuclear pump testing commenced at Tarapur on March 22, 2026. MD confirmed invoicing 2–4 pumps in CY26. Q4 FY26 results on April 30 will show first nuclear revenue uptick. Watch for revenue >₹50 Cr from nuclear in Q4.</div>
+  </div>
+</div>
+
+<div class="signal-box" style="border-left-color: var(--green);">
+  <div class="signal-icon">🔔</div>
+  <div>
+    <div class="signal-title" style="color:var(--green);">Aeroflex Industries — Capacity Explosion</div>
+    <div class="signal-text">SFN Skid capacity: 2,000 → 6,000 units effective April 1, 2026. Further jump to 15,000 by June/July 2026. Ashish Kacholia raised stake in Q4 FY26. Incremental revenue ₹120 Cr expected in FY27. Watch Q1 FY27 results.</div>
+  </div>
+</div>
+
+<div class="signal-box" style="border-left-color: var(--purple);">
+  <div class="signal-icon">📋</div>
+  <div>
+    <div class="signal-title" style="color:var(--purple);">Sealmatic India — FY26 Annual Results Pending</div>
+    <div class="signal-text">H2 FY26 revenue +68% YoY. Trading window closed Apr 1 until 48 hrs post-results. Key check: Does cash flow improve? Are debtor days improving? First full-year revenue run-rate post nuclear certification scale-up.</div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<div class="page-subtitle" style="margin-bottom:1rem;">Sector Thesis Status</div>
+<div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:var(--border); border:1px solid var(--border);">
+  <div style="background:var(--surface); padding:1.2rem;">
+    <div style="font-family:var(--mono); font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--purple); margin-bottom:0.5rem;">Nuclear</div>
+    <div style="font-size:0.82rem; color:#a0a0a0; line-height:1.5;">Policy: SHANTI Act passed ✓<br>NTPC 30 GW target ✓<br>Private entry: Slow to start ⚠<br>Timeline: 2030–2047 story</div>
+  </div>
+  <div style="background:var(--surface); padding:1.2rem;">
+    <div style="font-family:var(--mono); font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--blue); margin-bottom:0.5rem;">Data Centers</div>
+    <div style="font-size:0.82rem; color:#a0a0a0; line-height:1.5;">Tax holiday to 2047 ✓<br>$126B committed ✓<br>1.3 GW → 5 GW by 2030 ✓<br>Timeline: NOW — 2028</div>
+  </div>
+  <div style="background:var(--surface); padding:1.2rem;">
+    <div style="font-family:var(--mono); font-size:0.62rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--green); margin-bottom:0.5rem;">BESS / Hydrogen</div>
+    <div style="font-size:0.82rem; color:#a0a0a0; line-height:1.5;">₹18,100 Cr PLI ✓<br>47 GW storage needed ✓<br>Currently 0.8 GWh installed ✓<br>Timeline: 2026–2030</div>
+  </div>
+</div>
+```
+
+  </section>
+
+  <!-- ===== THESIS ===== -->
+
+  <section id="thesis" class="section">
+    <h1 class="page-title">Investment Theses</h1>
+    <p class="page-subtitle">Click any card for full 6-box analysis · Red flags verified before thesis written</p>
+
+```
+<div class="thesis-grid">
+
+  <!-- Sealmatic -->
+  <div class="thesis-card nuclear" onclick="openThesis('sealmatic')">
+    <div class="thesis-sector">⚛ Nuclear Components</div>
+    <div class="thesis-title">Sealmatic India</div>
+    <div class="thesis-ticker">BSE: 543782 · MCap ₹464 Cr · BSE SME</div>
+    <div class="thesis-moat">Only mechanical seal company in India with ISO 19443 nuclear certification. Every 700 MW reactor needs ~100 critical seals. 14 new reactors → 1,400 seals by 2031. 30-year lifetime recurring revenue.</div>
+    <div class="thesis-metrics">
+      <div class="metric">
+        <div class="metric-label">Pledging</div>
+        <div class="metric-val green">ZERO</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Promoter</div>
+        <div class="metric-val green">72.5%↑</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Rev H2 FY26</div>
+        <div class="metric-val gold">+68% YoY</div>
+      </div>
+    </div>
+    <div class="red-flags">
+      <div class="red-flags-title">▲ Red Flag Scan</div>
+      <div class="flag-item pass">Zero promoter pledge. Family buying in Dec 2025.</div>
+      <div class="flag-item pass">Almost debt-free. Profit CAGR 26% over 5 years.</div>
+      <div class="flag-item warn">Cash flow negative — working capital management weak.</div>
+      <div class="flag-item warn">BSE SME listed — very low liquidity.</div>
+    </div>
+    <div class="potential-row">
+      <span class="potential-label">3–5 Year Potential</span>
+      <span class="potential-value">5 – 10x</span>
+      <div class="confidence-bar">
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KSB -->
+  <div class="thesis-card nuclear" onclick="openThesis('ksb')">
+    <div class="thesis-sector">⚛ Nuclear Pumps</div>
+    <div class="thesis-title">KSB Limited</div>
+    <div class="thesis-ticker">NSE: KSB · MCap ₹16,850 Cr · Main Board</div>
+    <div class="thesis-moat">18 of 24 operational Indian nuclear reactors use KSB's primary coolant pumps. Only qualified Indian supplier for NPCIL fleet. Nuclear order book ₹1,282 Cr (49.5% of total). German parent KSB SE bought additional stake in open market.</div>
+    <div class="thesis-metrics">
+      <div class="metric">
+        <div class="metric-label">Pledging</div>
+        <div class="metric-val green">ZERO</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Promoter</div>
+        <div class="metric-val green">69.8%↑</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">D/E Ratio</div>
+        <div class="metric-val green">0.003x</div>
+      </div>
+    </div>
+    <div class="red-flags">
+      <div class="red-flags-title">▲ Red Flag Scan</div>
+      <div class="flag-item pass">Zero insider selling in 10 years. PwC audited.</div>
+      <div class="flag-item pass">German parent bought 3.11% stake at market price.</div>
+      <div class="flag-item warn">Debtor days rising: 97 → 118 days (solar govt projects).</div>
+      <div class="flag-item warn">Nuclear revenue delivery consistently delayed 3 years.</div>
+    </div>
+    <div class="potential-row">
+      <span class="potential-label">3 Year Potential</span>
+      <span class="potential-value">3 – 5x</span>
+      <div class="confidence-bar">
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aeroflex -->
+  <div class="thesis-card datacenter" onclick="openThesis('aeroflex')">
+    <div class="thesis-sector">🌐 Data Center + Multi-Sector</div>
+    <div class="thesis-title">Aeroflex Industries</div>
+    <div class="thesis-ticker">NSE: AEROFLEX · MCap ₹3,830 Cr</div>
+    <div class="thesis-moat">Stainless steel flexible hoses for data center liquid cooling, nuclear, hydrogen, HVAC, defence, aerospace. Multi-sector hedge — wins across ALL themes simultaneously. Ashish Kacholia raising stake Q4 FY26.</div>
+    <div class="thesis-metrics">
+      <div class="metric">
+        <div class="metric-label">Pledging</div>
+        <div class="metric-val green">ZERO</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Profit CAGR</div>
+        <div class="metric-val gold">44.6% 5Y</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Capacity</div>
+        <div class="metric-val gold">3x by Jul</div>
+      </div>
+    </div>
+    <div class="red-flags">
+      <div class="red-flags-title">▲ Red Flag Scan</div>
+      <div class="flag-item pass">Zero encumbrance — confirmed April 2026 BSE filing.</div>
+      <div class="flag-item pass">Record Q3 FY26: highest-ever revenue, EBITDA, PAT.</div>
+      <div class="flag-item warn">₹417.6 Cr tax demand for FY19 — company contesting.</div>
+      <div class="flag-item pass">Ashish Kacholia raised stake Q4 FY26 — smart money.</div>
+    </div>
+    <div class="potential-row">
+      <span class="potential-label">3–5 Year Potential</span>
+      <span class="potential-value">4 – 6x</span>
+      <div class="confidence-bar">
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Techno Electric -->
+  <div class="thesis-card datacenter" onclick="openThesis('techno')">
+    <div class="thesis-sector">🌐 Data Centers + Power EPC</div>
+    <div class="thesis-title">Techno Electric</div>
+    <div class="thesis-ticker">NSE: TECHNOE · MCap ₹14,733 Cr</div>
+    <div class="thesis-moat">60-year EPC company transforming into data center operator. RailTel 30-year revenue-sharing DC contract. Targeting 250 MW DC capacity by FY30. $1.3B capex planned. Zero debt with ₹1,925 Cr cash — no dilution needed.</div>
+    <div class="thesis-metrics">
+      <div class="metric">
+        <div class="metric-label">Pledging</div>
+        <div class="metric-val green">ZERO</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Debt</div>
+        <div class="metric-val green">ZERO</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Order Book</div>
+        <div class="metric-val gold">₹10,200 Cr</div>
+      </div>
+    </div>
+    <div class="red-flags">
+      <div class="red-flags-title">▲ Red Flag Scan</div>
+      <div class="flag-item pass">Zero debt, ₹1,925 Cr cash. 22 MFs + 132 FIIs holding.</div>
+      <div class="flag-item pass">Q3 FY26: +37% revenue YoY, +24% profit YoY.</div>
+      <div class="flag-item warn">Operating margins volatile: 17.6% → 13.2% → 14.5%.</div>
+      <div class="flag-item warn">DC revenue still tiny — story not yet in numbers.</div>
+    </div>
+    <div class="potential-row">
+      <span class="potential-label">3 Year Potential</span>
+      <span class="potential-value">3 – 5x</span>
+      <div class="confidence-bar">
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bondada -->
+  <div class="thesis-card bess" onclick="openThesis('bondada')">
+    <div class="thesis-sector">⚡ BESS + Solar EPC</div>
+    <div class="thesis-title">Bondada Engineering</div>
+    <div class="thesis-ticker">NSE: BONDADA · MCap ₹3,895 Cr</div>
+    <div class="thesis-moat">₹7,385 Cr order book = 4.7x annual revenue. Promoter Dr. Bondada buying own shares in open market March 2026. First BESS order won (Telangana GENCO). Cumulative 1.3 GWp solar executed. Revenue CAGR 41%, profit CAGR 75% over 3 years.</div>
+    <div class="thesis-metrics">
+      <div class="metric">
+        <div class="metric-label">Pledging</div>
+        <div class="metric-val green">ZERO</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Rev CAGR</div>
+        <div class="metric-val gold">41% 3Y</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">ROE</div>
+        <div class="metric-val green">29.6%</div>
+      </div>
+    </div>
+    <div class="red-flags">
+      <div class="red-flags-title">▲ Red Flag Scan</div>
+      <div class="flag-item pass">Promoter buying open market — strongest conviction signal.</div>
+      <div class="flag-item pass">No SEBI notices. No key person exits. No QIP failures.</div>
+      <div class="flag-item warn">D/E ratio 0.5 — borderline for EPC company.</div>
+      <div class="flag-item warn">EPC margins thin 5–7%. PSU payment delays possible.</div>
+    </div>
+    <div class="potential-row">
+      <span class="potential-label">3 Year Potential</span>
+      <span class="potential-value">3 – 5x</span>
+      <div class="confidence-bar">
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Advait Energy -->
+  <div class="thesis-card hydrogen" onclick="openThesis('advait')">
+    <div class="thesis-sector">🔋 Green Hydrogen + BESS</div>
+    <div class="thesis-title">Advait Energy Transitions</div>
+    <div class="thesis-ticker">BSE: ADVAIT · MCap ₹2,089 Cr</div>
+    <div class="thesis-moat">Transitioning from electrical EPC to green hydrogen + BESS. Q2 FY26 revenue +239% YoY. Order book ₹1,000 Cr (+177% YoY). Won L1 bid 150 MW / 300 MWh BESS in Gujarat. Vijay Kedia (1.14% stake) — legendary small-cap validator.</div>
+    <div class="thesis-metrics">
+      <div class="metric">
+        <div class="metric-label">Rev Growth</div>
+        <div class="metric-val gold">+239% Q2</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Promoter</div>
+        <div class="metric-val green">66.8%</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Order Book</div>
+        <div class="metric-val gold">₹1,000 Cr</div>
+      </div>
+    </div>
+    <div class="red-flags">
+      <div class="red-flags-title">▲ Red Flag Scan</div>
+      <div class="flag-item pass">Vijay Kedia stake — validated by India's best small-cap picker.</div>
+      <div class="flag-item pass">Revenue growth is real — 239% confirmed in Q2 FY26.</div>
+      <div class="flag-item warn">Debtor days high at 173 days — working capital stress risk.</div>
+      <div class="flag-item warn">P/E ~48 — not cheap. Growth must continue to justify.</div>
+    </div>
+    <div class="potential-row">
+      <span class="potential-label">3–5 Year Potential</span>
+      <span class="potential-value">5 – 10x</span>
+      <div class="confidence-bar">
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot"></div>
+        <div class="conf-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STL Networks -->
+  <div class="thesis-card datacenter" onclick="openThesis('stlnetworks')">
+    <div class="thesis-sector">🌐 Data Center + BharatNet + AI Infrastructure</div>
+    <div class="thesis-title">STL Networks (Invenia)</div>
+    <div class="thesis-ticker">NSE: STLNETWORK · MCap ₹1,227 Cr · Listed Sep 2025</div>
+    <div class="thesis-moat">Demerged from Sterlite Technologies. Asset-light digital infra services — fibre deployment, network management, 50 data centres managed. ₹4,249 Cr order book = 3.6x revenue. BharatNet ₹2,631 Cr, PowerGrid DC ₹359 Cr, NIC ₹206 Cr. Parent STL supplies cable at arm's-length — technology + credibility transfer.</div>
+    <div class="thesis-metrics">
+      <div class="metric">
+        <div class="metric-label">MCap</div>
+        <div class="metric-val gold">₹1,227 Cr</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Order Book</div>
+        <div class="metric-val gold">₹4,249 Cr</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">OB/Revenue</div>
+        <div class="metric-val green">3.6x</div>
+      </div>
+    </div>
+    <div class="red-flags">
+      <div class="red-flags-title">▲ Red Flag Scan</div>
+      <div class="flag-item fail">Currently loss-making. Net loss ₹73 Cr TTM.</div>
+      <div class="flag-item fail">Debtor days 279 — dangerously high working capital stress.</div>
+      <div class="flag-item pass">Promoter approved ₹108 Cr warrants at ₹24 for debt reduction — skin in game.</div>
+      <div class="flag-item warn">Post-demerger pain — newly listed Sep 2025, not yet steady state.</div>
+      <div class="flag-item pass">Parent Sterlite Technologies backs with technology + contracts.</div>
+    </div>
+    <div class="potential-row">
+      <span class="potential-label">3–5 Year Potential</span>
+      <span class="potential-value">5 – 10x</span>
+      <div class="confidence-bar">
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot"></div>
+        <div class="conf-dot"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Bajel Projects -->
+  <div class="thesis-card datacenter" onclick="openThesis('bajel')">
+    <div class="thesis-sector">⚡ Data Center Power + Transmission EPC</div>
+    <div class="thesis-title">Bajel Projects</div>
+    <div class="thesis-ticker">NSE: BAJEL · MCap ₹1,889 Cr · Bajaj Group</div>
+    <div class="thesis-moat">Carved out from Bajaj Electricals. EPC for HV substations, transmission lines up to 765 kV. India needs ₹9.1 lakh Cr in transmission through FY32. Every data center, nuclear plant, and renewable project needs HV substation work — Bajel already won its first DC substation (Navi Mumbai). Saudi Arabia JV signed Feb 2026.</div>
+    <div class="thesis-metrics">
+      <div class="metric">
+        <div class="metric-label">Pledging</div>
+        <div class="metric-val green">ZERO</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Promoter</div>
+        <div class="metric-val green">62.5%</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Rev FY25</div>
+        <div class="metric-val gold">+122% YoY</div>
+      </div>
+    </div>
+    <div class="red-flags">
+      <div class="red-flags-title">▲ Red Flag Scan</div>
+      <div class="flag-item pass">Zero pledging. Bajaj Group — India's 3rd largest group ($167B mcap).</div>
+      <div class="flag-item pass">Order book ₹3,600 Cr. Saudi Arabia JV — first international expansion.</div>
+      <div class="flag-item warn">EBITDA margin thin at 3.4% — EPC inherently low margin.</div>
+      <div class="flag-item warn">Debtor days improved 176→136 but still elevated.</div>
+    </div>
+    <div class="potential-row">
+      <span class="potential-label">3–5 Year Potential</span>
+      <span class="potential-value">4 – 6x</span>
+      <div class="confidence-bar">
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skipper Limited -->
+  <div class="thesis-card datacenter" onclick="openThesis('skipper')">
+    <div class="thesis-sector">⚡ Transmission Towers + EPC (India + Global)</div>
+    <div class="thesis-title">Skipper Limited</div>
+    <div class="thesis-ticker">NSE: SKIPPER · MCap ₹3,966 Cr · SK Bansal Group</div>
+    <div class="thesis-moat">Manufactures transmission towers for 765 kV and 800 kV lines — among very few companies in India capable of this. Every nuclear, renewable, and data center project needs HV transmission. Order book all-time high ₹8,820 Cr. Targeting world's largest transmission tower maker by FY28 (6 lakh MTPA). Zero pledging confirmed March 2026.</div>
+    <div class="thesis-metrics">
+      <div class="metric">
+        <div class="metric-label">Pledging</div>
+        <div class="metric-val green">ZERO</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Order Book</div>
+        <div class="metric-val gold">₹8,820 Cr</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">PAT Growth</div>
+        <div class="metric-val green">+37% H1</div>
+      </div>
+    </div>
+    <div class="red-flags">
+      <div class="red-flags-title">▲ Red Flag Scan</div>
+      <div class="flag-item pass">Zero encumbrances confirmed — promoters disclosed March 31, 2026.</div>
+      <div class="flag-item pass">H1 FY26 revenue +14% YoY. PAT +37% YoY. Highest-ever order book.</div>
+      <div class="flag-item pass">Bidding pipeline ₹30,000 Cr. Export orders growing 27% YoY.</div>
+      <div class="flag-item warn">Polymer segment margins thin. Capex intensity increasing.</div>
+    </div>
+    <div class="potential-row">
+      <span class="potential-label">3 Year Potential</span>
+      <span class="potential-value">3 – 5x</span>
+      <div class="confidence-bar">
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AMIC Forging -->
+  <div class="thesis-card nuclear" onclick="openThesis('amicforging')">
+    <div class="thesis-sector">⚛ Nuclear Forgings + Defence + BSMR-200</div>
+    <div class="thesis-title">AMIC Forging</div>
+    <div class="thesis-ticker">BSE: 544037 · MCap ₹1,663 Cr · Chamaria Family</div>
+    <div class="thesis-moat">Open forging specialist with nuclear-grade approvals — DRDO, ISRO, BARC certified. India's BSMR-200 reactor pressure vessel forging technology developed in collaboration with Indian industry (BARC announcement). AMIC is among the very few private companies with nuclear forging capability. EBITDA 27% margins. Capex completing FY27.</div>
+    <div class="thesis-metrics">
+      <div class="metric">
+        <div class="metric-label">MCap</div>
+        <div class="metric-val gold">₹1,663 Cr</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">EBITDA Margin</div>
+        <div class="metric-val green">27.38%</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Promoter</div>
+        <div class="metric-val green">58%</div>
+      </div>
+    </div>
+    <div class="red-flags">
+      <div class="red-flags-title">▲ Red Flag Scan</div>
+      <div class="flag-item pass">Zero promoter pledging. 58% holding — strong skin in game.</div>
+      <div class="flag-item pass">EBITDA surged 53.61% YoY in H1 FY26. Margins 27.38%.</div>
+      <div class="flag-item warn">Revenue growth only 4.57% in H1 — margins expanding faster than revenue.</div>
+      <div class="flag-item warn">Capex program delayed by weather — commissioning FY27. Revenue ramp pending.</div>
+      <div class="flag-item warn">No large group parent — family-promoted. Higher execution risk.</div>
+    </div>
+    <div class="potential-row">
+      <span class="potential-label">3–5 Year Potential</span>
+      <span class="potential-value">5 – 8x</span>
+      <div class="confidence-bar">
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot filled"></div>
+        <div class="conf-dot"></div>
+        <div class="conf-dot"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+```
+
+  </section>
+
+  <!-- ===== WATCHLIST ===== -->
+
+  <section id="watchlist" class="section">
+    <h1 class="page-title">Watchlist</h1>
+    <p class="page-subtitle">All candidates · Sorted by conviction level</p>
+
+```
+<table class="watchlist-table">
+  <thead>
+    <tr>
+      <th>Ticker</th>
+      <th>Company</th>
+      <th>Sector</th>
+      <th>Mcap</th>
+      <th>Status</th>
+      <th>Next Trigger</th>
+      <th>Conviction</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="ticker-cell">KSB</td>
+      <td>KSB Limited</td>
+      <td><span style="color:var(--purple); font-size:0.75rem;">Nuclear</span></td>
+      <td style="font-family:var(--mono); font-size:0.78rem;">₹16,850 Cr</td>
+      <td><span class="status-badge entry">Entry Watch</span></td>
+      <td style="font-size:0.78rem; color:#a0a0a0;">Apr 30 Q4 results</td>
+      <td>
+        <div class="confidence-bar">
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot filled"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="ticker-cell">AEROFLEX</td>
+      <td>Aeroflex Industries</td>
+      <td><span style="color:var(--blue); font-size:0.75rem;">Multi-Sector</span></td>
+      <td style="font-family:var(--mono); font-size:0.78rem;">₹3,830 Cr</td>
+      <td><span class="status-badge tracking">Tracking</span></td>
+      <td style="font-size:0.78rem; color:#a0a0a0;">Q1 FY27 capacity ramp</td>
+      <td>
+        <div class="confidence-bar">
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="ticker-cell">BONDADA</td>
+      <td>Bondada Engineering</td>
+      <td><span style="color:var(--green); font-size:0.75rem;">BESS + Solar</span></td>
+      <td style="font-family:var(--mono); font-size:0.78rem;">₹3,895 Cr</td>
+      <td><span class="status-badge tracking">Tracking</span></td>
+      <td style="font-size:0.78rem; color:#a0a0a0;">Q4 FY26 BESS orders</td>
+      <td>
+        <div class="confidence-bar">
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="ticker-cell">SEALMATIC</td>
+      <td>Sealmatic India</td>
+      <td><span style="color:var(--purple); font-size:0.75rem;">Nuclear</span></td>
+      <td style="font-family:var(--mono); font-size:0.78rem;">₹464 Cr</td>
+      <td><span class="status-badge entry">Entry Watch</span></td>
+      <td style="font-size:0.78rem; color:#a0a0a0;">FY26 annual results</td>
+      <td>
+        <div class="confidence-bar">
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="ticker-cell">TECHNOE</td>
+      <td>Techno Electric & Engg</td>
+      <td><span style="color:var(--blue); font-size:0.75rem;">Data Center</span></td>
+      <td style="font-family:var(--mono); font-size:0.78rem;">₹14,733 Cr</td>
+      <td><span class="status-badge watching">Watching</span></td>
+      <td style="font-size:0.78rem; color:#a0a0a0;">DC revenue in P&L</td>
+      <td>
+        <div class="confidence-bar">
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="ticker-cell">ADVAIT</td>
+      <td>Advait Energy Transitions</td>
+      <td><span style="color:var(--gold); font-size:0.75rem;">Hydrogen</span></td>
+      <td style="font-family:var(--mono); font-size:0.78rem;">₹2,089 Cr</td>
+      <td><span class="status-badge watching">Watching</span></td>
+      <td style="font-size:0.78rem; color:#a0a0a0;">Debtor days improve</td>
+      <td>
+        <div class="confidence-bar">
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot filled"></div><div class="conf-dot"></div>
+          <div class="conf-dot"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="ticker-cell">ECORECO</td>
+      <td>Eco Recycling</td>
+      <td><span style="color:var(--red); font-size:0.75rem;">E-Waste</span></td>
+      <td style="font-family:var(--mono); font-size:0.78rem;">₹769 Cr</td>
+      <td><span class="status-badge wait">Wait</span></td>
+      <td style="font-size:0.78rem; color:#a0a0a0;">May 22 Q4 results</td>
+      <td>
+        <div class="confidence-bar">
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot"></div><div class="conf-dot"></div>
+          <div class="conf-dot"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="ticker-cell">MTARTECH</td>
+      <td>MTAR Technologies</td>
+      <td><span style="color:var(--purple); font-size:0.75rem;">Nuclear/Defence</span></td>
+      <td style="font-family:var(--mono); font-size:0.78rem;">₹15,061 Cr</td>
+      <td><span class="status-badge wait">Wait</span></td>
+      <td style="font-size:0.78rem; color:#a0a0a0;">Promoter selling stops</td>
+      <td>
+        <div class="confidence-bar">
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot"></div><div class="conf-dot"></div>
+          <div class="conf-dot"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="ticker-cell">STLNETWORK</td>
+      <td>STL Networks (Invenia)</td>
+      <td><span style="color:var(--blue); font-size:0.75rem;">Data Center + BharatNet</span></td>
+      <td style="font-family:var(--mono); font-size:0.78rem;">₹1,227 Cr</td>
+      <td><span class="status-badge tracking">Tracking</span></td>
+      <td style="font-size:0.78rem; color:#a0a0a0;">Debt reduction + Q4 profitability</td>
+      <td>
+        <div class="confidence-bar">
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot filled"></div><div class="conf-dot"></div>
+          <div class="conf-dot"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="ticker-cell">BAJEL</td>
+      <td>Bajel Projects Ltd</td>
+      <td><span style="color:var(--blue); font-size:0.75rem;">DC Power EPC</span></td>
+      <td style="font-family:var(--mono); font-size:0.78rem;">₹1,889 Cr</td>
+      <td><span class="status-badge tracking">Tracking</span></td>
+      <td style="font-size:0.78rem; color:#a0a0a0;">DC substation orders</td>
+      <td>
+        <div class="confidence-bar">
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="ticker-cell">SKIPPER</td>
+      <td>Skipper Limited</td>
+      <td><span style="color:var(--blue); font-size:0.75rem;">Transmission EPC</span></td>
+      <td style="font-family:var(--mono); font-size:0.78rem;">₹3,966 Cr</td>
+      <td><span class="status-badge tracking">Tracking</span></td>
+      <td style="font-size:0.78rem; color:#a0a0a0;">Export orders + capacity ramp</td>
+      <td>
+        <div class="confidence-bar">
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td class="ticker-cell">AMICFORGING</td>
+      <td>AMIC Forging Ltd</td>
+      <td><span style="color:var(--purple); font-size:0.75rem;">Nuclear Forgings</span></td>
+      <td style="font-family:var(--mono); font-size:0.78rem;">₹1,663 Cr</td>
+      <td><span class="status-badge watching">Watching</span></td>
+      <td style="font-size:0.78rem; color:#a0a0a0;">BSMR-200 orders + capex live</td>
+      <td>
+        <div class="confidence-bar">
+          <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+          <div class="conf-dot filled"></div><div class="conf-dot"></div>
+          <div class="conf-dot"></div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+```
+
+  </section>
+
+  <!-- ===== TRACKING NOTES ===== -->
+
+  <section id="notes" class="section">
+    <div class="tracking-header">
+      <div>
+        <h1 class="page-title">Tracking Notes</h1>
+        <p class="page-subtitle">Log every signal, order win, red flag, and observation</p>
+      </div>
+      <button class="add-note-btn" onclick="openNoteModal()">+ Add Note</button>
+    </div>
+
+```
+<div class="notes-list" id="notesList">
+  <!-- Pre-loaded notes -->
+  <div class="note-card">
+    <div class="note-date">21 Apr 2026<br>09:30 IST</div>
+    <div>
+      <div class="note-company">KSB LIMITED</div>
+      <span class="note-type milestone">Milestone</span>
+      <div class="note-text">Nuclear pump testing commenced at Tarapur test bed on March 22, 2026. MD Rajeev Jain confirmed in institutional investor meet. Expects to invoice 2–4 pumps in CY26. This is the first concrete timeline after 3 years of delays. Stock up 27% in last month. Q4 FY26 results on April 30 — key date to watch for nuclear revenue showing in P&L.</div>
+    </div>
+    <button class="delete-btn" onclick="deleteNote(this)">✕</button>
+  </div>
+  <div class="note-card">
+    <div class="note-date">21 Apr 2026<br>09:30 IST</div>
+    <div>
+      <div class="note-company">AEROFLEX INDUSTRIES</div>
+      <span class="note-type trigger">Trigger</span>
+      <div class="note-text">Ashish Kacholia raised stake in Q4 FY26. SFN Skid Assembly capacity expanding 2,000 → 6,000 units effective April 1, 2026. Management guiding ₹120 Cr incremental revenue in FY27. EU FTA expected to boost exports significantly — Europe is biggest market. Record Q3 FY26: highest-ever revenue, EBITDA, PAT. Export growth 30% YoY.</div>
+    </div>
+    <button class="delete-btn" onclick="deleteNote(this)">✕</button>
+  </div>
+  <div class="note-card">
+    <div class="note-date">21 Apr 2026<br>09:30 IST</div>
+    <div>
+      <div class="note-company">BONDADA ENGINEERING</div>
+      <span class="note-type trigger">Trigger</span>
+      <div class="note-text">Dr. Bondada acquired 9,600 shares in open market on March 27, 2026. Holding now 45.05%. This is the same promoter-buying pattern that flagged STL Networks before its 20% upper circuit move. ₹7,385 Cr order book as of March 2026. FY26 execution: 500 MWp solar projects, total cumulative 1.3 GWp. First BESS win (Telangana GENCO ₹240 Cr) — eyeing ₹1,000 Cr BESS pipeline.</div>
+    </div>
+    <button class="delete-btn" onclick="deleteNote(this)">✕</button>
+  </div>
+  <div class="note-card">
+    <div class="note-date">21 Apr 2026<br>09:30 IST</div>
+    <div>
+      <div class="note-company">SEALMATIC INDIA</div>
+      <span class="note-type thesis">Thesis</span>
+      <div class="note-text">Only nuclear-certified mechanical seal maker in India (ISO 19443). H2 FY26 revenue ₹57 Cr vs ₹34 Cr YoY (+68%). Net profit ₹9 Cr vs ₹3 Cr (+3x). Promoter family increased shareholding Dec 2025. Zero pledge confirmed April 2026. KEY RISK: Cash flow consistently negative — working capital stress. BSE SME — very illiquid. Enter only in small tranches. Hold minimum 5 years.</div>
+    </div>
+    <button class="delete-btn" onclick="deleteNote(this)">✕</button>
+  </div>
+  <div class="note-card">
+    <div class="note-date">21 Apr 2026<br>09:30 IST</div>
+    <div>
+      <div class="note-company">ECORECO</div>
+      <span class="note-type risk">Risk</span>
+      <div class="note-text">REJECTED as active buy. 3 consecutive declining quarters (Q1: -19% rev, Q2: profit -29%, Q3: rev -40%, profit -60%). Failed QIP Jan 2026 — institutions wouldn't fund it. Company Secretary resigned same day as bad Q3 results. Debtor days low at 3.38x. Wait for May 22 Q4 FY26 results. Thesis only valid if revenue shows meaningful recovery. Promoter warrant at ₹408 (above CMP) is positive — but not enough to buy yet.</div>
+    </div>
+    <button class="delete-btn" onclick="deleteNote(this)">✕</button>
+  </div>
+</div>
+```
+
+  </section>
+
+  <!-- ===== PRE-BUY CHECKLIST ===== -->
+
+  <section id="checklist" class="section">
+    <h1 class="page-title">Pre-Buy Checklist</h1>
+    <p class="page-subtitle">Complete before every entry · No shortcuts</p>
+
+```
+<div class="checklist">
+  <div class="checklist-card">
+    <div class="checklist-title">🔴 Red Flag Filter (Auto-Reject if Any)</div>
+    <label class="check-item"><input type="checkbox"> Promoter pledging &gt; 5% → STOP, do not buy</label>
+    <label class="check-item"><input type="checkbox"> Revenue declining 2+ consecutive quarters → STOP</label>
+    <label class="check-item"><input type="checkbox"> Promoter holding falling sharply (&gt;5% in 3 years) → STOP</label>
+    <label class="check-item"><input type="checkbox"> CS / CFO resigned in last 6 months → STOP</label>
+    <label class="check-item"><input type="checkbox"> Failed QIP / fundraise in last 12 months → STOP</label>
+    <label class="check-item"><input type="checkbox"> SEBI notice / insider trading allegation → STOP</label>
+    <label class="check-item"><input type="checkbox"> Debtor days &gt; 150 and rising → STOP</label>
+    <label class="check-item"><input type="checkbox"> D/E &gt; 0.5 without strong justification → STOP</label>
+  </div>
+
+  <div class="checklist-card">
+    <div class="checklist-title">✅ Fundamental Minimum</div>
+    <label class="check-item"><input type="checkbox"> Revenue growing last 3 quarters</label>
+    <label class="check-item"><input type="checkbox"> Net profit growing (not just revenue)</label>
+    <label class="check-item"><input type="checkbox"> ROCE &gt; 15%</label>
+    <label class="check-item"><input type="checkbox"> Operating cash flow positive</label>
+    <label class="check-item"><input type="checkbox"> Promoter holding stable or increasing</label>
+    <label class="check-item"><input type="checkbox"> No pledging or minimal pledging (&lt;5%)</label>
+    <label class="check-item"><input type="checkbox"> PEG ratio &lt; 1.5 (growth at reasonable price)</label>
+    <label class="check-item"><input type="checkbox"> Auditor is reputed firm (no qualification)</label>
+  </div>
+
+  <div class="checklist-card">
+    <div class="checklist-title">📋 Annual Report Check (45 min)</div>
+    <label class="check-item"><input type="checkbox"> Read MD&A — does management acknowledge risks honestly?</label>
+    <label class="check-item"><input type="checkbox"> Check cash flow statement — profit converting to cash?</label>
+    <label class="check-item"><input type="checkbox"> Check related party transactions — anything suspicious?</label>
+    <label class="check-item"><input type="checkbox"> Read auditor's notes — any qualifications or emphasis?</label>
+    <label class="check-item"><input type="checkbox"> Check contingent liabilities — tax demands, legal cases</label>
+    <label class="check-item"><input type="checkbox"> Verify inventory days and debtor days trend</label>
+    <label class="check-item"><input type="checkbox"> Look at capex plans — does management walk the talk?</label>
+  </div>
+
+  <div class="checklist-card">
+    <div class="checklist-title">🎯 Thesis Validation</div>
+    <label class="check-item"><input type="checkbox"> Sector tailwind confirmed (policy, demand, data)</label>
+    <label class="check-item"><input type="checkbox"> Moat identified — why can't a competitor do this?</label>
+    <label class="check-item"><input type="checkbox"> Smart money present (big investor, promoter buying)</label>
+    <label class="check-item"><input type="checkbox"> Management skin in game (&gt;40% promoter holding)</label>
+    <label class="check-item"><input type="checkbox"> Bear case written — what kills this thesis?</label>
+    <label class="check-item"><input type="checkbox"> Exit trigger defined — what would make you sell?</label>
+    <label class="check-item"><input type="checkbox"> Position size appropriate (&lt;5–7% of portfolio)</label>
+    <label class="check-item"><input type="checkbox"> Entry staggered — not buying 100% in one shot</label>
+  </div>
+</div>
+```
+
+  </section>
+
+</main>
+
+<!-- Add Note Modal -->
+
+<div class="modal-overlay" id="noteModal">
+  <div class="modal">
+    <div class="modal-title">Add Tracking Note</div>
+    <div class="form-row">
+      <label class="form-label">Company / Ticker</label>
+      <input type="text" class="form-input" id="noteCompany" placeholder="e.g. KSB LIMITED">
+    </div>
+    <div class="form-row">
+      <label class="form-label">Note Type</label>
+      <select class="form-select" id="noteType">
+        <option value="trigger">Trigger — Order win, smart money entry</option>
+        <option value="risk">Risk — Red flag, concern raised</option>
+        <option value="milestone">Milestone — Results, capacity, certification</option>
+        <option value="watchpoint">Watch Point — Monitor this metric</option>
+        <option value="thesis">Thesis — Core investment case note</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Note</label>
+      <textarea class="form-textarea" id="noteText" placeholder="Write your observation, signal, or thesis update..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeNoteModal()">Cancel</button>
+      <button class="btn-save" onclick="saveNote()">Save Note</button>
+    </div>
+  </div>
+</div>
+
+<!-- Full Thesis Overlay -->
+
+<div class="thesis-full-overlay" id="thesisOverlay">
+  <div class="thesis-full">
+    <div class="thesis-full-header">
+      <div>
+        <div id="tf-sector" style="font-family:var(--mono); font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--gold); margin-bottom:0.4rem;"></div>
+        <div id="tf-title" style="font-family:var(--serif); font-size:1.6rem;"></div>
+        <div id="tf-ticker" style="font-family:var(--mono); font-size:0.72rem; color:var(--text-dim); margin-top:0.2rem;"></div>
+      </div>
+      <button class="thesis-full-close" onclick="closeThesis()">✕</button>
+    </div>
+    <div id="tf-content"></div>
+  </div>
+</div>
+
+<script>
+// Date
+document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
+
+// Nav
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Notes
+function openNoteModal() {
+  document.getElementById('noteModal').classList.add('open');
+}
+function closeNoteModal() {
+  document.getElementById('noteModal').classList.remove('open');
+  document.getElementById('noteCompany').value = '';
+  document.getElementById('noteText').value = '';
+}
+function saveNote() {
+  const company = document.getElementById('noteCompany').value.trim();
+  const type = document.getElementById('noteType').value;
+  const text = document.getElementById('noteText').value.trim();
+  if (!company || !text) return;
+
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
+  const timeStr = now.toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'}) + ' IST';
+
+  const typeLabels = {trigger:'Trigger', risk:'Risk', milestone:'Milestone', watchpoint:'Watch Point', thesis:'Thesis'};
+
+  const card = document.createElement('div');
+  card.className = 'note-card';
+  card.innerHTML = `
+    <div class="note-date">${dateStr}<br>${timeStr}</div>
+    <div>
+      <div class="note-company">${company.toUpperCase()}</div>
+      <span class="note-type ${type}">${typeLabels[type]}</span>
+      <div class="note-text">${text}</div>
+    </div>
+    <button class="delete-btn" onclick="deleteNote(this)">✕</button>
+  `;
+  document.getElementById('notesList').insertBefore(card, document.getElementById('notesList').firstChild);
+  closeNoteModal();
+}
+function deleteNote(btn) {
+  if(confirm('Delete this note?')) btn.closest('.note-card').remove();
+}
+
+// Full thesis data
+const thesisData = {
+  sealmatic: {
+    sector: '⚛ Nuclear Components',
+    title: 'Sealmatic India Ltd',
+    ticker: 'BSE: 543782 · MCap ₹464 Cr · BSE SME Listed · CMP ~₹480',
+    boxes: [
+      { label: 'Business', content: 'Manufactures mechanical seals, seal supply systems, pumps, and valves. Serves oil & gas, chemical, pharmaceutical, and power sectors. Revenue CAGR 29% from FY22–FY25. FY25: ₹102 Cr revenue, ₹15.91 Cr profit.' },
+      { label: 'Core Growth Driver', content: '<ul><li>Only company in India with ISO 19443 nuclear certification</li><li>14 new 700 MW reactors under construction by 2031 = 1,400 new critical seals required</li><li>Targeting 15% market share — ₹200+ Cr nuclear opportunity</li><li>Each seal generates recurring MRO revenue for 30-year reactor lifetime</li></ul>' },
+      { label: 'Moat', content: 'Nuclear certification takes 7–10 years to obtain. No new entrant can break this in medium term. Switching costs extremely high — NPCIL cannot change approved vendors mid-project. Second only to L&T as nuclear-certified seal maker in India.' },
+      { label: 'Red Flags & Risks', content: '<ul><li>⚠ Cash flow consistently negative — working capital management needs improvement</li><li>⚠ BSE SME listed — very low liquidity. Entry and exit in small tranches only</li><li>⚠ Nuclear reactor construction delays would directly delay order inflows</li><li>✓ Zero promoter pledge. Family member increasing shareholding Dec 2025</li></ul>' },
+      { label: 'Target & Entry', content: '<strong>Base case (3–5 years):</strong> 5–7x if nuclear build-out proceeds on schedule<br><strong>Bull case:</strong> 10x if 15% market share + recurring MRO begins<br><strong>Bear case:</strong> 2x if nuclear delays persist another 2+ years<br><strong>Entry:</strong> Staggered tranches. Max 3% of portfolio.' },
+      { label: 'Exit Triggers', content: '<ul><li>Revenue declines 2 consecutive quarters after nuclear ramp expected</li><li>Promoter pledging appears or holding falls sharply</li><li>Government reduces nuclear build-out targets significantly</li><li>Competitor obtains ISO 19443 certification</li><li>Target achieved — exit at 7-10x from entry price</li></ul>' }
+    ]
+  },
+  ksb: {
+    sector: '⚛ Nuclear Pumps — Near Monopoly',
+    title: 'KSB Limited',
+    ticker: 'NSE: KSB · MCap ₹16,850 Cr · CMP ~₹968 · Next Result: Apr 30',
+    boxes: [
+      { label: 'Business', content: 'Pump and valve manufacturer since 1960. Subsidiary of German KSB SE (170+ years old). 6 plants in Maharashtra, Tamil Nadu, Kerala. Serves energy, water, oil & gas, chemicals, building services. D/E ratio 0.003x. Net cash ₹283 Cr. ICRA AA+ rated.' },
+      { label: 'Core Growth Driver', content: '<ul><li>18 of 24 operational Indian nuclear reactors use KSB\'s primary coolant pumps</li><li>8 of 11 reactors under construction — KSB confirmed on all 4 Indian-designed PHWRs</li><li>Nuclear order book ₹1,282 Cr (49.5% of total ₹2,585 Cr)</li><li>Nuclear testing commenced Tarapur March 22, 2026 — invoicing 2–4 pumps in CY26</li><li>Solar pumps (PM-KUSUM), exports (22% CAGR), aftermarket services</li></ul>' },
+      { label: 'Moat', content: 'Nuclear qualification takes 7–10 years. KSB has been NPCIL\'s primary coolant pump supplier since 1960s. Zero insider selling in 10 years. German parent governance standards. Once qualified for a reactor design, incumbent advantage is almost permanent.' },
+      { label: 'Red Flags & Risks', content: '<ul><li>⚠ Nuclear revenue delivery delayed 3 consecutive years — management over-optimistic</li><li>⚠ Debtor days rising: 74 → 118 days (solar government project payment delays)</li><li>✓ Zero pledge. Zero insider selling in 10 years. PwC audited</li><li>✓ German parent bought 3.11% stake at market price June 2024</li><li>✓ Q4 CY25 EBITDA margin 16.5% — highest in recent history</li></ul>' },
+      { label: 'Target & Entry', content: '<strong>Base case (3 years):</strong> 3–5x if nuclear revenue materialises CY26-27<br><strong>Bull case:</strong> 5x+ if nuclear fleet expansion + solar scale<br><strong>Bear case:</strong> 1.5x if nuclear delays another 2+ years<br><strong>Entry:</strong> After Q4 FY26 results April 30. Wait for nuclear revenue confirmation.' },
+      { label: 'Exit Triggers', content: '<ul><li>Nuclear revenue fails to show in 2 consecutive quarterly results after guidance</li><li>Parent company (KSB SE Germany) sells India stake significantly</li><li>Competitor achieves nuclear coolant pump qualification</li><li>Stock reaches 5x entry price — review and partial exit</li></ul>' }
+    ]
+  },
+  aeroflex: {
+    sector: '🌐 Data Center + Nuclear + Hydrogen + Multi-Sector',
+    title: 'Aeroflex Industries Ltd',
+    ticker: 'NSE: AEROFLEX · MCap ₹3,830 Cr · CMP ~₹301',
+    boxes: [
+      { label: 'Business', content: 'Manufactures stainless steel flexible hoses, assemblies, metal bellows, expansion joints. 2,938 product SKUs. Plants in Mumbai. Exports to 40+ countries. Almost debt-free. Profit CAGR 44.6% over 5 years. Part of Sat Industries group.' },
+      { label: 'Core Growth Driver', content: '<ul><li>Products used in: data center liquid cooling, nuclear, hydrogen, HVAC, aerospace, defence, EV</li><li>SFN Skid Assembly: 2,000 → 6,000 units (April 2026) → 15,000 (June/July 2026)</li><li>Incremental revenue ₹120 Cr in FY27 from skid capacity alone</li><li>India-EU FTA expected to unlock Europe market significantly</li><li>Ashish Kacholia raised stake Q4 FY26 — 20-year track record of micro-cap winners</li></ul>' },
+      { label: 'Moat', content: 'Stainless steel hoses for critical applications require highly specific certifications. Products are mission-critical but small-ticket — customers don\'t switch suppliers for minor cost savings. Nuclear and aerospace approvals extremely hard to replicate. No single sector dependency — multi-sector hedge.' },
+      { label: 'Red Flags & Risks', content: '<ul><li>⚠ ₹417.6 Cr tax demand for FY19 — company contesting. Monitor outcome</li><li>✓ Zero encumbrance confirmed April 2026 BSE filing</li><li>✓ Record Q3 FY26: highest-ever revenue, EBITDA, PAT</li><li>✓ Ashish Kacholia — smartest micro-cap picker in India — raising stake</li><li>✓ Almost debt-free. Revenue CAGR strong.</li></ul>' },
+      { label: 'Target & Entry', content: '<strong>Base case (3–5 years):</strong> 4–6x driven by capacity ramp + EU FTA + multi-sector<br><strong>Bull case:</strong> 8x if data center liquid cooling becomes mainstream in India<br><strong>Bear case:</strong> 2x if tax demand resolved adversely<br><strong>Entry:</strong> On 10–15% pullback from current levels. Max 5% of portfolio.' },
+      { label: 'Exit Triggers', content: '<ul><li>Tax demand resolved adversely — reassess</li><li>Kacholia exits stake significantly</li><li>Revenue growth slows to &lt;15% for 2 consecutive quarters</li><li>New entrant captures significant market share in stainless hoses</li><li>Target achieved — exit at 5x from entry price, review at 3x</li></ul>' }
+    ]
+  },
+  techno: {
+    sector: '🌐 Data Centers + Power Infrastructure EPC',
+    title: 'Techno Electric & Engineering Co.',
+    ticker: 'NSE: TECHNOE · MCap ₹14,733 Cr · CMP ~₹1,265',
+    boxes: [
+      { label: 'Business', content: 'Power EPC company since 1963. Provides EPC services for transmission, distribution, smart metering, FGD. Now pivoting into data center developer and operator. FY26 revenue guidance ₹3,500–3,600 Cr. PAT guidance ₹570 Cr. Zero debt with ₹1,925 Cr cash.' },
+      { label: 'Core Growth Driver', content: '<ul><li>Data center target: 250 MW capacity by FY30, ₹10,900 Cr (~$1.3B) capex</li><li>RailTel partnership: 30-year revenue-sharing DC contract in Noida (10 MW, 2 phases)</li><li>Phase 1 (6MW) Chennai data center operational. Noida + Kolkata under construction</li><li>Power transmission EPC order book ₹10,200 Cr — provides revenue floor</li><li>Smart metering: 2.24M meter order book ₹2,612 Cr, 50% executed</li></ul>' },
+      { label: 'Moat', content: 'Owns the power infrastructure that data centers depend on — the hardest part. 60 years of power EPC relationships with utilities. Zero debt means it can fund $1.3B capex without dilution. RailTel 30-year annuity model is immune to EPC margin pressure.' },
+      { label: 'Red Flags & Risks', content: '<ul><li>⚠ Operating margins volatile: 17.6% → 13.2% → 14.5% across recent quarters</li><li>⚠ Data center revenue still tiny — story ahead of numbers currently</li><li>⚠ Valuation rated "Very Expensive" by analysts</li><li>✓ Zero long-term debt. 22 MFs + 132 FIIs holding — institutional validation</li><li>✓ Promoter 56.9%, zero pledging</li></ul>' },
+      { label: 'Target & Entry', content: '<strong>Base case (3 years):</strong> 3–5x when DC revenues begin appearing in P&L (FY27-28)<br><strong>Bull case:</strong> 5x+ if re-rated as infra developer not EPC contractor<br><strong>Bear case:</strong> 1.5x if DC ramp is slower than guided<br><strong>Entry:</strong> Wait for Q4 FY26 results. Check if DC orderbook growing meaningfully.' },
+      { label: 'Exit Triggers', content: '<ul><li>DC capex paused or reduced significantly</li><li>Revenue growth stalls (&lt;20%) for 2 quarters</li><li>Debt starts appearing on balance sheet without corresponding DC revenue</li><li>RailTel or other anchor DC contract cancelled</li></ul>' }
+    ]
+  },
+  bondada: {
+    sector: '⚡ BESS + Solar EPC + Telecom',
+    title: 'Bondada Engineering Ltd',
+    ticker: 'NSE: BONDADA · MCap ₹3,895 Cr · CMP ~₹352',
+    boxes: [
+      { label: 'Business', content: 'EPC services for solar energy, telecom towers, and BESS. Partnerships with Reliance Jio, Airtel, Indus, BSNL. 1.3 GWp cumulative solar executed. FY25 revenue ₹1,570 Cr (2x YoY), profit ₹120 Cr (2.5x YoY). Revenue CAGR 41%, profit CAGR 75% over 3 years.' },
+      { label: 'Core Growth Driver', content: '<ul><li>₹7,385 Cr order book = 4.7x annual revenue = exceptional revenue visibility</li><li>BESS entry: Won Telangana GENCO ₹240 Cr project as L1 bidder</li><li>BESS pipeline: ₹1,000 Cr being targeted</li><li>India BESS market 10x jump in 2026 (0.8 GWh → 5 GWh installed)</li><li>Dr. Bondada buying own shares in open market — strongest possible signal</li></ul>' },
+      { label: 'Moat', content: 'Track record of execution at scale (1.3 GWp solar cumulative) gives tender bidding advantage. Diversification across solar + telecom + BESS reduces sector risk. Promoter with 45% skin in game. ROE 29.6% — highly capital efficient for EPC.' },
+      { label: 'Red Flags & Risks', content: '<ul><li>⚠ D/E ratio 0.5 — borderline for EPC model, watch if increases</li><li>⚠ EPC margins thin at 5–7% — cost overrun impacts profit significantly</li><li>⚠ PSU clients (MAHAGENCO, etc.) — payment delay risk</li><li>✓ Zero promoter pledge. No SEBI notices. No KMP exits</li><li>✓ Promoter buying open market March 2026 = real money conviction</li></ul>' },
+      { label: 'Target & Entry', content: '<strong>Base case (3 years):</strong> 3–5x as BESS orders scale and order book converts<br><strong>Bull case:</strong> 5x+ if BESS becomes 25%+ of revenue mix<br><strong>Bear case:</strong> 2x if EPC execution misses and debt rises<br><strong>Entry:</strong> Monitor BESS order flow every quarter. Enter on pullbacks.' },
+      { label: 'Exit Triggers', content: '<ul><li>D/E ratio crosses 0.8 without corresponding revenue increase</li><li>Promoter stops buying or starts selling</li><li>Order book growth slows to &lt;20% for 2 consecutive quarters</li><li>BESS PLI policy reversal or major tender cancellation</li></ul>' }
+    ]
+  },
+  bajel: {
+    sector: '⚡ Data Center Power EPC + Transmission',
+    title: 'Bajel Projects Limited',
+    ticker: 'NSE: BAJEL · MCap ₹1,889 Cr · Bajaj Group · CMP ~₹170',
+    boxes: [
+      { label: 'Business', content: 'Carved out from Bajaj Electricals in 2022. EPC for power transmission and distribution — HV transmission lines up to 765 kV, substations, underground cabling, monopoles, international EPC. Manufacturing facility at Ranjangaon MIDC, Pune (40,000 MT/year). FY25 revenue ₹2,585 Cr (+122% YoY). Part of Bajaj Group — India's 3rd largest conglomerate.' },
+      { label: 'Core Growth Driver', content: '<ul><li>India's ₹9.1 lakh Cr power transmission plan through FY32 — Bajel directly in the execution chain</li><li>First data center substation order: 220/33 kV GIS substation for colocation DC in Navi Mumbai (Sep 2024)</li><li>₹400 Cr order from PGCIL for 765 kV Rajasthan renewable transmission line</li><li>₹700 Cr ultra-mega order from MSETCL for HV substations</li><li>Saudi Arabia JV with Al Sharif for EHV EPC — first international expansion (Feb 2026)</li></ul>' },
+      { label: 'Moat', content: 'Bajaj Group brand opens doors to PGCIL, MSETCL, Tata Power, and all major utilities. 20+ years of EPC experience inherited from Bajaj Electricals. One of few Indian companies executing 765 kV transmission projects. Every rupee spent on data centers, nuclear, and renewables needs HV substation infrastructure — Bajel is the invisible enabler.' },
+      { label: 'Red Flags & Risks', content: '<ul><li>⚠ EBITDA margins thin at 3.4% — EPC inherently low margin business</li><li>⚠ Debtor days still elevated (improved 176→136 days)</li><li>✓ Zero promoter pledging. Bajaj Group brand. Zero insider selling</li><li>✓ Order book ₹3,600 Cr. Saudi Arabia JV opens Gulf market</li><li>⚠ Slow margin expansion — management targeting higher-margin projects</li></ul>' },
+      { label: 'Target & Entry', content: '<strong>Base case (3–5 years):</strong> 4–6x as DC + nuclear + renewable transmission orders scale<br><strong>Bull case:</strong> 7x+ if Saudi Arabia JV generates meaningful revenue by FY28<br><strong>Bear case:</strong> 2x if margins stay compressed and debt rises<br><strong>Entry:</strong> On 10–15% pullback. Watch for DC substation order momentum in Q4 FY26 results.' },
+      { label: 'Exit Triggers', content: '<ul><li>Margins don't improve beyond 5% EBITDA for 3 consecutive quarters</li><li>Debt rises sharply without corresponding revenue</li><li>Saudi Arabia JV collapses or no orders materialize by FY27</li><li>Bajaj Group reduces stake significantly</li><li>Target achieved at 5x from entry price</li></ul>' }
+    ]
+  },
+  skipper: {
+    sector: '⚡ HV Transmission Towers + EPC (India + 65 Countries)',
+    title: 'Skipper Limited',
+    ticker: 'NSE: SKIPPER · MCap ₹3,966 Cr · SK Bansal Group · Zero pledging',
+    boxes: [
+      { label: 'Business', content: 'Incorporated 1981. Manufactures transmission towers, monopoles, telecom towers, railway structures, PVC/CPVC pipes. EPC execution of HV transmission lines. Operates in 65+ countries across EMEA, LATAM, Africa. SK Bansal Group, Kolkata. FY26 capacity expanding to 6 lakh MTPA by FY28 — potentially world's largest transmission tower maker.' },
+      { label: 'Core Growth Driver', content: '<ul><li>India's ₹9.1 lakh Cr transmission capex through FY32 — Skipper wins 765 kV PGCIL orders consistently</li><li>Order book all-time high ₹8,820 Cr as of Sep 2025 (₹9,093 Cr by Dec 2025)</li><li>Export revenue growing 27% YoY — EU, Middle East, Australia, Africa</li><li>First substation EPC order — new segment entry (potential 50% of ₹9 lakh Cr capex)</li><li>Railway Kavach project: ₹50,000 Cr opportunity — Skipper actively participating</li></ul>' },
+      { label: 'Moat', content: '765 kV and 800 kV tower capability — very few Indian companies have this. 40+ years of execution history. Test station facility + IIT Kharagpur R&D partnership. International client audits completed (Middle East, North America). Tower manufacturing is expertise business — engineering precision prevents commoditization at high voltages.' },
+      { label: 'Red Flags & Risks', content: '<ul><li>✓ Zero pledging — confirmed March 31, 2026 SEBI SAST disclosure</li><li>✓ H1 FY26 PAT +37% YoY. Order book all-time high. No key management exits</li><li>⚠ Polymer segment thin margins — dilutes consolidated margins slightly</li><li>⚠ Capex intensity increasing as capacity expands — watch D/E ratio</li><li>⚠ Revenue recognition lumpy — large transmission projects execute over 18–24 months</li></ul>' },
+      { label: 'Target & Entry', content: '<strong>Base case (3 years):</strong> 3–5x as order book converts and substation EPC scales<br><strong>Bull case:</strong> 5x+ if substation segment takes off + export share hits 30%<br><strong>Bear case:</strong> 2x if execution delays and margins stay compressed<br><strong>Entry:</strong> Monitor quarterly order inflows. Enter on pullbacks below ₹320. Max 4–5% of portfolio.' },
+      { label: 'Exit Triggers', content: '<ul><li>Order inflow growth slows below 15% for 2 consecutive quarters</li><li>Promoter encumbrances appear on filings</li><li>Polymer segment drags margins below 8% consolidated</li><li>Capex goes out of control — D/E crosses 0.8x</li><li>Target at 4x from entry — review and partial exit</li></ul>' }
+    ]
+  },
+  amicforging: {
+    sector: '⚛ Nuclear + Defence Forgings (BSMR-200 Play)',
+    title: 'AMIC Forging Limited',
+    ticker: 'BSE: 544037 · MCap ₹1,663 Cr · Chamaria Family · Nuclear Approved',
+    boxes: [
+      { label: 'Business', content: 'Manufacturer of open forgings for defence, nuclear, oil & gas, and infrastructure. Based in Kolkata. Established 2007 as Kali Mata Forging, rebranded AMIC Forging. Clients: DRDO, ISRO, BARC. FY25 revenue ₹124 Cr, profit ₹25.2 Cr. EBITDA margin 27.38% in H1 FY26 — exceptional for a forging company. Capex program nearing completion.' },
+      { label: 'Core Growth Driver', content: '<ul><li>BSMR-200 program: BARC confirmed reactor pressure vessel forging technology developed with Indian industry — AMIC is positioned as a supplier</li><li>14 new 700 MW PHWRs under construction — each needs hundreds of precision forgings</li><li>DRDO defence indigenisation: Chaffs, missiles, warheads all need precision forgings</li><li>ISRO launch vehicle ramp-up — solid propellant motor casings are forged components</li><li>New capex facility commissioning FY27 — revenue ramp expected then</li></ul>' },
+      { label: 'Moat', content: 'Nuclear forging approvals take 7–10 years. AMIC already has BARC/DRDO certification. This certification is not transferable — a new entrant cannot replicate in medium term. Every PHWR reactor needs ~500+ nuclear-grade forgings per unit. 14 units under construction = locked pipeline. SMR wave adds additional demand layer from 2026 onwards.' },
+      { label: 'Red Flags & Risks', content: '<ul><li>✓ Zero promoter pledging. 58% holding — strong conviction</li><li>✓ EBITDA margin 27.38% — world-class for forging company</li><li>⚠ Revenue growth only 4.57% in H1 FY26 — revenue ramp pending capex completion</li><li>⚠ No large group parent — Chamaria family promoted. Higher execution risk than group-backed companies</li><li>⚠ Capex delayed by West Bengal rains — revenue inflection pushed to FY27</li><li>⚠ Very small revenue base ₹124 Cr — position size accordingly</li></ul>' },
+      { label: 'Target & Entry', content: '<strong>This is the highest risk, highest reward in the portfolio.</strong><br><br><strong>Base case (5 years):</strong> 5–8x if BSMR-200 + PHWR fleet ordering materialises<br><strong>Bull case:</strong> 10x+ if SMR supply chain opens and export nuclear forgings begin<br><strong>Bear case:</strong> 2x if nuclear delays persist beyond 2028<br><strong>Entry:</strong> Very small position (2% of portfolio max). This is a 5-year bet, not a 2-year trade.' },
+      { label: 'Exit Triggers', content: '<ul><li>Revenue fails to ramp after capex commissioning (watch Q2 FY27)</li><li>Promoter holding falls below 50%</li><li>BSMR-200 program faces major government policy reversal</li><li>No nuclear-specific order disclosures by FY27</li><li>Target at 7x from entry — review and partial exit</li></ul>' }
+    ]
+  },
+  stlnetworks: {
+    sector: '🌐 Data Center + BharatNet + AI Infrastructure',
+    title: 'STL Networks Ltd (Invenia)',
+    ticker: 'NSE: STLNETWORK · MCap ₹1,227 Cr · Listed Sep 2025 · CMP ~₹27',
+    boxes: [
+      { label: 'Business', content: 'Demerged from Sterlite Technologies effective March 31, 2025. Listed September 2025. Provides end-to-end network services: fibre deployment, system integration, IT infrastructure management, data centre network setup, NOC/SOC operations. Laid 1,00,000+ fibre route km. Manages ~50 data centres. FY25 revenue ₹1,180 Cr, EBITDA ₹81 Cr.' },
+      { label: 'Core Growth Driver', content: '<ul><li>BharatNet III — ₹2,631 Cr J&K/Ladakh contract (consortium with Dilip Buildcon)</li><li>PowerGrid Data Center — ₹359 Cr Manesar DC supply + install + maintain</li><li>MSSS Smart City — ₹205 Cr system integration (Bihar, with RailTel)</li><li>NIC — ₹206 Cr network equipment for National Informatics Centre (Feb 2026)</li><li>Order book ₹4,249 Cr = 3.6x annual revenue — multi-year revenue locked</li></ul>' },
+      { label: 'Waaree Framework Fit', content: '<ul><li>✅ Govt push — BharatNet, IndiaAI, Digital India, smart cities all mandate this</li><li>✅ Asset light — no manufacturing, pure services and project execution</li><li>✅ Easy to scale — each new DC or network project adds recurring O&M revenue</li><li>✅ Parent backing — Sterlite Technologies supplies cable, provides credibility</li><li>✅ MCap ₹1,227 Cr — right size for multibagger returns</li></ul>' },
+      { label: 'Red Flags & Risks', content: '<ul><li>❌ Loss making — net loss ₹73 Cr TTM. Not yet profitable</li><li>❌ Debtor days 279 — dangerously high. Govt clients pay slowly</li><li>⚠ Promoter holding 44.2% — lower than ideal</li><li>⚠ Newly listed Sep 2025 — no long track record as independent entity</li><li>✓ Promoter approved ₹108 Cr warrants at ₹24 for debt reduction — real commitment</li><li>✓ Order book 3.6x revenue — revenue floor is secured</li></ul>' },
+      { label: 'Target & Entry', content: '<strong>This is a turnaround bet, not a compounder yet.</strong><br><br><strong>Buy signal:</strong> When 2 consecutive profitable quarters appear<br><strong>Base case (3–5 years):</strong> 5–10x if debt reduces + profitability returns + DC business scales<br><strong>Bear case:</strong> Stays loss-making, debtor days worsen — avoid<br><strong>Entry:</strong> Staggered. 40% position now. 60% on first profitable quarter confirmation.' },
+      { label: 'Exit Triggers', content: '<ul><li>Debtor days worsen beyond 300 days — thesis breaks</li><li>Parent Sterlite Technologies reduces stake significantly</li><li>BharatNet execution stalls or contracts cancelled by government</li><li>Losses deepen without management explanation</li><li>Target achieved at 5–7x — review and partial exit</li></ul>' }
+    ]
+  },
+  advait: {
+    sector: '🔋 Green Hydrogen + BESS (Vijay Kedia Pick)',
+    title: 'Advait Energy Transitions',
+    ticker: 'BSE: ADVAIT · MCap ₹2,089 Cr · CMP ~₹1,638',
+    boxes: [
+      { label: 'Business', content: 'Formerly Advait Infratech. Power transmission + telecom EPC transitioning to green hydrogen and BESS. Headquarters: Ahmedabad, Gujarat. Launched Phase 1: 30 MW electrolyser unit. Won L1 bid 150 MW / 300 MWh BESS in Gujarat. FY26 5-year revenue CAGR 54.49%.' },
+      { label: 'Core Growth Driver', content: '<ul><li>Green hydrogen electrolyser: Phase 1 (30 MW) → Phase 2 (100 MW) → 300 MW eventual</li><li>BESS: Won L1 bid 150 MW / 300 MWh Gujarat — part of 335 MW / 670 MWh GUVNL project</li><li>H1 FY26 revenue +239% YoY. Q3 FY26 revenue +138% YoY. Order book ₹1,000 Cr (+177%)</li><li>Vijay Kedia took 1.14% stake — legendary small-cap investor validation</li></ul>' },
+      { label: 'Moat', content: 'First mover in electrolyser manufacturing with PLI backing. Gujarat base advantages — state pushing clean energy heavily. Vijay Kedia\'s track record of picking companies 3–5 years before they become mainstream. Multi-product approach (power EPC + H2 + BESS) reduces dependency.' },
+      { label: 'Red Flags & Risks', content: '<ul><li>⚠ Debtor days HIGH at 173 days — working capital stress is real concern</li><li>⚠ P/E ~48 — needs growth to continue at current pace to justify</li><li>⚠ Electrolyser manufacturing is early stage — execution unproven at scale</li><li>✓ Vijay Kedia stake — serious validation from India\'s best operator-picker</li><li>✓ Promoter 66.8% — high skin in game</li></ul>' },
+      { label: 'Target & Entry', content: '<strong>Base case (3–5 years):</strong> 5–7x if hydrogen + BESS execution materialises<br><strong>Bull case:</strong> 10x+ if electrolyser business scales to 300 MW<br><strong>Bear case:</strong> 2x if debtor days worsen and working capital crunch hits<br><strong>Entry:</strong> Monitor debtor days — must improve before adding meaningfully.' },
+      { label: 'Exit Triggers', content: '<ul><li>Debtor days cross 200 days — working capital thesis breaks</li><li>Vijay Kedia exits stake significantly</li><li>Electrolyser Phase 1 faces serious execution delays (&gt;12 months)</li><li>Revenue growth slows to &lt;30% for 2 quarters at current P/E</li></ul>' }
+    ]
+  }
+};
+
+function openThesis(id) {
+  const data = thesisData[id];
+  if (!data) return;
+  document.getElementById('tf-sector').textContent = data.sector;
+  document.getElementById('tf-title').textContent = data.title;
+  document.getElementById('tf-ticker').textContent = data.ticker;
+
+  let html = '';
+  data.boxes.forEach(box => {
+    html += `<div class="thesis-box">
+      <div class="thesis-box-label">${box.label}</div>
+      <div class="thesis-box-content">${box.content}</div>
+    </div>`;
+  });
+  document.getElementById('tf-content').innerHTML = html;
+  document.getElementById('thesisOverlay').classList.add('open');
+  document.getElementById('thesisOverlay').scrollTop = 0;
+}
+
+function closeThesis() {
+  document.getElementById('thesisOverlay').classList.remove('open');
+}
+
+// Close thesis on background click
+document.getElementById('thesisOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeThesis();
+});
+
+// Close note modal on background click
+document.getElementById('noteModal').addEventListener('click', function(e) {
+  if (e.target === this) closeNoteModal();
+});
+</script>
+
+</body>
+</html>
