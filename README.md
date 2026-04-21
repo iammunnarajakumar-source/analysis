@@ -4,7 +4,7 @@ A personal investment thesis and tracking website for data center, nuclear, BESS
 
 ## Live Site
 
-👉 `https://YOUR-USERNAME.github.io/raja-portfolio`
+👉 `https://iammunnarajakumar-source.github.io/analysis/`
 
 ## What's Inside
 
