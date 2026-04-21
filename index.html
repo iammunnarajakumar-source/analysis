@@ -1912,7 +1912,6 @@ function closeThesis() {
   document.getElementById('thesisOverlay').classList.remove('open');
 }
 
-  
 // Close thesis on background click
 document.getElementById('thesisOverlay').addEventListener('click', function(e) {
   if (e.target === this) closeThesis();
@@ -1923,5 +1922,57 @@ document.getElementById('noteModal').addEventListener('click', function(e) {
   if (e.target === this) closeNoteModal();
 });
 </script>
+
+<script>
+// ===== ROUTER =====
+function showSection(sectionId, btn = null, push = true) {
+  document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+  const section = document.getElementById(sectionId);
+  if (section) section.classList.add('active');
+
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    if (b.getAttribute('onclick')?.includes(sectionId)) {
+      b.classList.add('active');
+    }
+  });
+
+  if (push) window.location.hash = sectionId;
+}
+
+function loadFromHash() {
+  const hash = window.location.hash.replace('#', '');
+  const valid = ['dashboard','thesis','watchlist','notes','checklist'];
+  if (valid.includes(hash)) {
+    showSection(hash, null, false);
+  } else {
+    showSection('dashboard', null, false);
+  }
+}
+
+window.addEventListener('hashchange', loadFromHash);
+
+function setDate() {
+  const el = document.getElementById("currentDate");
+  if (el) {
+    el.innerText = new Date().toLocaleDateString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+  }
+}
+
+function openThesis(id) {
+  alert("Open thesis: " + id);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setDate();
+  loadFromHash();
+});
+</script>
+
 </body>
 </html>
