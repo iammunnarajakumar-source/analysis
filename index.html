@@ -797,7 +797,7 @@
     <div class="dash-grid">
       <div class="stat-card">
         <div class="stat-label">Active Theses</div>
-        <div class="stat-value">6</div>
+        <div class="stat-value">7</div>
         <div class="stat-sub">Across 3 sectors</div>
       </div>
       <div class="stat-card">
@@ -1105,6 +1105,47 @@
         </div>
       </div>
 
+      <!-- STL Networks -->
+      <div class="thesis-card datacenter" onclick="openThesis('stlnetworks')">
+        <div class="thesis-sector">🌐 Data Center + BharatNet + AI Infrastructure</div>
+        <div class="thesis-title">STL Networks (Invenia)</div>
+        <div class="thesis-ticker">NSE: STLNETWORK · MCap ₹1,227 Cr · Listed Sep 2025</div>
+        <div class="thesis-moat">Demerged from Sterlite Technologies. Asset-light digital infra services — fibre deployment, network management, 50 data centres managed. ₹4,249 Cr order book = 3.6x revenue. BharatNet ₹2,631 Cr, PowerGrid DC ₹359 Cr, NIC ₹206 Cr. Parent STL supplies cable at arm's-length — technology + credibility transfer.</div>
+        <div class="thesis-metrics">
+          <div class="metric">
+            <div class="metric-label">MCap</div>
+            <div class="metric-val gold">₹1,227 Cr</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Order Book</div>
+            <div class="metric-val gold">₹4,249 Cr</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">OB/Revenue</div>
+            <div class="metric-val green">3.6x</div>
+          </div>
+        </div>
+        <div class="red-flags">
+          <div class="red-flags-title">▲ Red Flag Scan</div>
+          <div class="flag-item fail">Currently loss-making. Net loss ₹73 Cr TTM.</div>
+          <div class="flag-item fail">Debtor days 279 — dangerously high working capital stress.</div>
+          <div class="flag-item pass">Promoter approved ₹108 Cr warrants at ₹24 for debt reduction — skin in game.</div>
+          <div class="flag-item warn">Post-demerger pain — newly listed Sep 2025, not yet steady state.</div>
+          <div class="flag-item pass">Parent Sterlite Technologies backs with technology + contracts.</div>
+        </div>
+        <div class="potential-row">
+          <span class="potential-label">3–5 Year Potential</span>
+          <span class="potential-value">5 – 10x</span>
+          <div class="confidence-bar">
+            <div class="conf-dot filled"></div>
+            <div class="conf-dot filled"></div>
+            <div class="conf-dot filled"></div>
+            <div class="conf-dot"></div>
+            <div class="conf-dot"></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -1242,6 +1283,21 @@
             <div class="confidence-bar">
               <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
               <div class="conf-dot"></div><div class="conf-dot"></div>
+              <div class="conf-dot"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="ticker-cell">STLNETWORK</td>
+          <td>STL Networks (Invenia)</td>
+          <td><span style="color:var(--blue); font-size:0.75rem;">Data Center + BharatNet</span></td>
+          <td style="font-family:var(--mono); font-size:0.78rem;">₹1,227 Cr</td>
+          <td><span class="status-badge tracking">Tracking</span></td>
+          <td style="font-size:0.78rem; color:#a0a0a0;">Debt reduction + Q4 profitability</td>
+          <td>
+            <div class="confidence-bar">
+              <div class="conf-dot filled"></div><div class="conf-dot filled"></div>
+              <div class="conf-dot filled"></div><div class="conf-dot"></div>
               <div class="conf-dot"></div>
             </div>
           </td>
@@ -1527,6 +1583,19 @@ const thesisData = {
       { label: 'Red Flags & Risks', content: '<ul><li>⚠ D/E ratio 0.5 — borderline for EPC model, watch if increases</li><li>⚠ EPC margins thin at 5–7% — cost overrun impacts profit significantly</li><li>⚠ PSU clients (MAHAGENCO, etc.) — payment delay risk</li><li>✓ Zero promoter pledge. No SEBI notices. No KMP exits</li><li>✓ Promoter buying open market March 2026 = real money conviction</li></ul>' },
       { label: 'Target & Entry', content: '<strong>Base case (3 years):</strong> 3–5x as BESS orders scale and order book converts<br><strong>Bull case:</strong> 5x+ if BESS becomes 25%+ of revenue mix<br><strong>Bear case:</strong> 2x if EPC execution misses and debt rises<br><strong>Entry:</strong> Monitor BESS order flow every quarter. Enter on pullbacks.' },
       { label: 'Exit Triggers', content: '<ul><li>D/E ratio crosses 0.8 without corresponding revenue increase</li><li>Promoter stops buying or starts selling</li><li>Order book growth slows to &lt;20% for 2 consecutive quarters</li><li>BESS PLI policy reversal or major tender cancellation</li></ul>' }
+    ]
+  },
+  stlnetworks: {
+    sector: '🌐 Data Center + BharatNet + AI Infrastructure',
+    title: 'STL Networks Ltd (Invenia)',
+    ticker: 'NSE: STLNETWORK · MCap ₹1,227 Cr · Listed Sep 2025 · CMP ~₹27',
+    boxes: [
+      { label: 'Business', content: 'Demerged from Sterlite Technologies effective March 31, 2025. Listed September 2025. Provides end-to-end network services: fibre deployment, system integration, IT infrastructure management, data centre network setup, NOC/SOC operations. Laid 1,00,000+ fibre route km. Manages ~50 data centres. FY25 revenue ₹1,180 Cr, EBITDA ₹81 Cr.' },
+      { label: 'Core Growth Driver', content: '<ul><li>BharatNet III — ₹2,631 Cr J&K/Ladakh contract (consortium with Dilip Buildcon)</li><li>PowerGrid Data Center — ₹359 Cr Manesar DC supply + install + maintain</li><li>MSSS Smart City — ₹205 Cr system integration (Bihar, with RailTel)</li><li>NIC — ₹206 Cr network equipment for National Informatics Centre (Feb 2026)</li><li>Order book ₹4,249 Cr = 3.6x annual revenue — multi-year revenue locked</li></ul>' },
+      { label: 'Waaree Framework Fit', content: '<ul><li>✅ Govt push — BharatNet, IndiaAI, Digital India, smart cities all mandate this</li><li>✅ Asset light — no manufacturing, pure services and project execution</li><li>✅ Easy to scale — each new DC or network project adds recurring O&M revenue</li><li>✅ Parent backing — Sterlite Technologies supplies cable, provides credibility</li><li>✅ MCap ₹1,227 Cr — right size for multibagger returns</li></ul>' },
+      { label: 'Red Flags & Risks', content: '<ul><li>❌ Loss making — net loss ₹73 Cr TTM. Not yet profitable</li><li>❌ Debtor days 279 — dangerously high. Govt clients pay slowly</li><li>⚠ Promoter holding 44.2% — lower than ideal</li><li>⚠ Newly listed Sep 2025 — no long track record as independent entity</li><li>✓ Promoter approved ₹108 Cr warrants at ₹24 for debt reduction — real commitment</li><li>✓ Order book 3.6x revenue — revenue floor is secured</li></ul>' },
+      { label: 'Target & Entry', content: '<strong>This is a turnaround bet, not a compounder yet.</strong><br><br><strong>Buy signal:</strong> When 2 consecutive profitable quarters appear<br><strong>Base case (3–5 years):</strong> 5–10x if debt reduces + profitability returns + DC business scales<br><strong>Bear case:</strong> Stays loss-making, debtor days worsen — avoid<br><strong>Entry:</strong> Staggered. 40% position now. 60% on first profitable quarter confirmation.' },
+      { label: 'Exit Triggers', content: '<ul><li>Debtor days worsen beyond 300 days — thesis breaks</li><li>Parent Sterlite Technologies reduces stake significantly</li><li>BharatNet execution stalls or contracts cancelled by government</li><li>Losses deepen without management explanation</li><li>Target achieved at 5–7x — review and partial exit</li></ul>' }
     ]
   },
   advait: {
